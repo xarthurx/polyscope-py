@@ -12,6 +12,9 @@
 namespace py = pybind11;
 namespace ps = polyscope;
 
+// For overloaded functions, with C++11 compiler only
+template <typename... Args>
+using overload_cast_ = pybind11::detail::overload_cast_impl<Args...>;
 
 // clang-format off
 void bind_curve_network(py::module& m) {
@@ -54,6 +57,12 @@ void bind_curve_network(py::module& m) {
     .def("set_cull_whole_elements", &ps::CurveNetwork::setCullWholeElements, "Set cull whole elements")
     .def("get_cull_whole_elements", &ps::CurveNetwork::getCullWholeElements, "Get cull whole elements")
 
+    // variable radius
+    .def("set_node_radius_quantity", overload_cast_<ps::CurveNetworkNodeScalarQuantity*, bool>()(&ps::CurveNetwork::setNodeRadiusQuantity),
+      "Use a scalar to set node radius", py::arg("quantity"), py::arg("autoscale")=true)
+    .def("set_node_radius_quantity", overload_cast_<std::string, bool>()(&ps::CurveNetwork::setNodeRadiusQuantity),
+      "Use a scalar to set node radius by name", py::arg("quantity_name"), py::arg("autoscale")=true)
+    .def("clear_node_radius_quantity", &ps::CurveNetwork::clearNodeRadiusQuantity, "Clear any quantity setting the radius")
 
     // quantities
     .def("add_node_color_quantity", &ps::CurveNetwork::addNodeColorQuantity<Eigen::MatrixXd>, "Add a color function at nodes",

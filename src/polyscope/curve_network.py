@@ -125,6 +125,13 @@ class CurveNetwork:
         else:
             raise ValueError("bad node shape")
 
+    # radius quantity
+    def set_node_radius_quantity(self, quantity_name, autoscale=True):
+        self.bound_network.set_node_radius_quantity(quantity_name, autoscale)
+    
+    def clear_node_radius_quantity(self):
+        self.bound_network.clear_node_radius_quantity()
+
     ## Options
    
     # Radius

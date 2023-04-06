@@ -827,6 +827,23 @@ class TestCurveNetwork(unittest.TestCase):
         
         ps.remove_all_structures()
 
+    def test_variable_radius(self):
+        pts = self.generate_points()
+        N = pts.shape[0]
+        p = ps.register_curve_network("test_network", pts, self.generate_edges())
+        vals = np.random.rand(N)
+
+        p.add_scalar_quantity("test_vals", vals)
+
+        p.set_node_radius_quantity("test_vals")
+        ps.show(3)
+        p.clear_node_radius_quantity("test_vals")
+        ps.show(3)
+        p.set_node_radius_quantity("test_vals", False)
+        ps.show(3)
+        
+        ps.remove_all_structures()
+
 
 class TestSurfaceMesh(unittest.TestCase):
 
